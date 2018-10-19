@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+-->
+<layout>
+    <!-- Orders -->
+    <adminhtml_sales_order_view>
+        <reference name="order_tab_info">
+            <action method="setTemplate">
+                <template>uploadprescription/sales/order/view/tab/info.phtml</template>
+            </action>
+            <block type="uploadprescription/adminhtml_sales_order_uploadprescription" name="uploadprescription" template="uploadprescription/uploadprescription.phtml"/>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

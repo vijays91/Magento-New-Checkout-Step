@@ -1,0 +1,225 @@
+<?php
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+?>
+
+<form id="co-uploadprescription-form" action="" method="post" enctype="multipart/form-data">
+    <fieldset>
+        <ul class="form-list">
+            <li id="uploadprescription-form">
+                <fieldset>
+                    <ul>
+                        <li class="wide">
+                            <p><?php echo $this->__('Please upload your prescription below') ?></p>
+                            <div class="input-box">
+                                <input type='hidden' name='uploadprescription[prescription]'  class="" id="uploadprescription_prescription" value='<?php echo $this->getQuote()->getUploadprescription()?>' />
+                                <input type='hidden' name='uploadprescription[uploadname]'  class="" id="uploadprescription_uploadname" value='<?php echo $this->getQuote()->getUploadprescriptionname()?>' />
+                                <input type='file' name='uploadprescription[image]'  class="input-text" id="uploadprescription_image" value="<?php // echo $this->getQuote()->getUploadprescriptionname()?>" />
+                            </div>
+                            <p><?php echo $this->__('If you are not able to upload your prescription please fax to 1(888)777-2344');?></p>
+                        </li>
+                    </ul>
+                </fieldset>
+            </li>
+        </ul>
+
+        <div class="buttons-set" id="uploadprescription-buttons-container">
+            <!-- p class="required"><?php echo $this->__('* Required Fields') ?></p -->
+            
+            <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="validate()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+
+            <span class="please-wait" id="uploadprescription-please-wait" style="display:none;">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
+            </span>
+        </div>
+    </fieldset>
+</form>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Uploadprescription = Class.create();
+Uploadprescription.prototype = {
+/*
+initialize: function(form, saveUrl){
+        this.form = form;
+        if ($(this.form)) {
+            $(this.form).observe('submit', function(event){this.save();Event.stop(event);}.bind(this));
+        }
+        this.saveUrl = saveUrl;
+        this.validator = new Validation(this.form);
+        this.onSave = this.nextStep.bindAsEventListener(this);
+        this.onComplete = this.resetLoadWaiting.bindAsEventListener(this);
+    },
+ 
+    validate: function() {
+        if(!this.validator.validate()) {
+            return false;
+        }
+        return true;
+    },
+ 
+    save: function(){
+ 
+        if (checkout.loadWaiting!=false) return;
+        if (this.validate()) {
+            checkout.setLoadWaiting('uploadprescription');
+            var request = new Ajax.Request(
+                this.saveUrl,
+                {
+                    method:'post',
+                    onComplete: this.onComplete,
+                    onSuccess: this.onSave,
+                    onFailure: checkout.ajaxFailure.bind(checkout),
+                    parameters: Form.serialize(this.form)
+                }
+            );
+        }
+    },
+ 
+    resetLoadWaiting: function(transport){
+        checkout.setLoadWaiting(false);
+    },
+ 
+    nextStep: function(transport){
+        if (transport && transport.responseText){
+            try{
+                response = eval('(' + transport.responseText + ')');
+            }
+            catch (e) {
+                response = {};
+            }
+        }
+ 
+        if (response.error) {
+            alert(response.message);
+            return false;
+        }
+ 
+        if (response.update_section) {
+            $('checkout-'+response.update_section.name+'-load').update(response.update_section.html);
+        }
+ 
+ 
+        if (response.goto_section) {
+            checkout.gotoSection(response.goto_section);
+            checkout.reloadProgressBlock();
+            return;
+        }
+ 
+        checkout.setPayment();
+    }
+
+    */
+
+
+    initialize: function(form, saveUrl){
+        this.form = form;
+        if ($(this.form)) {
+            $(this.form).observe('submit', function(event){this.save();Event.stop(event);}.bind(this));
+        }
+        this.saveUrl = saveUrl;
+        this.onSave = this.nextStep.bindAsEventListener(this);
+        this.onComplete = this.resetLoadWaiting.bindAsEventListener(this);
+    },
+
+    save: function(){
+        if (checkout.loadWaiting!=false) return;
+
+        var validator = new Validation(this.form);
+        if (validator.validate()) {
+
+            checkout.setLoadWaiting('uploadprescription');
+
+
+            var request = new Ajax.Request(
+                this.saveUrl,
+                {
+                    method: 'post',
+                    onComplete: this.onComplete,
+                    onSuccess: this.onSave,
+                    onFailure: checkout.ajaxFailure.bind(checkout),
+                    parameters: Form.serialize(this.form)
+                }
+            );
+        }
+    },
+
+    resetLoadWaiting: function(transport){
+        checkout.setLoadWaiting(false);
+    },
+
+    nextStep: function(transport){
+        if (transport && transport.responseText){
+            try{
+                response = eval('(' + transport.responseText + ')');
+            }
+            catch (e) {
+                response = {};
+            }
+        }
+
+        if (response.error){
+            if ((typeof response.message) == 'string') {
+                alert(response.message);
+            } else {
+                if (window.billingRegionUpdater) {
+                    billingRegionUpdater.update();
+                }
+
+                alert(response.message.join("\n"));
+            }
+
+            return false;
+        }
+
+        checkout.setStepResponse(response);
+    }
+
+}
+
+var uploadprescription = new Uploadprescription('co-uploadprescription-form', '<?php echo $this->getUrl('checkout/onepage/saveUploadprescription') ?>');
+
+
+
+function validate() {
+    var myForm = new VarienForm('co-uploadprescription-form', true);
+    if (myForm.validator.validate()) {
+
+        if(jQuery('#uploadprescription_image').val()) {
+            var file_data = jQuery('#uploadprescription_image').prop('files')[0];   
+            var form_data = new FormData();
+            form_data.append('file', file_data);            
+            jQuery.ajax({
+                url: "<?php echo Mage::getUrl('checkout/onepage/uploadprescription'); ?>", // point to server-side PHP script 
+                dataType: 'text',  // what to expect back from the PHP script, if anything
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,                         
+                type: 'post',
+                success: function(response){
+                    var obj = JSON.parse(response);
+                    if(obj.filename && obj.uploadname) {
+                        jQuery('#uploadprescription_prescription').val(obj.filename);
+                        jQuery('#uploadprescription_uploadname').val(obj.uploadname);
+                        uploadprescription.save();
+                    } else {
+                        alert('<?php echo $this->__("Kindly check the uploaded file format."); ?>');
+                    }
+                }
+            });
+        } else {
+            jQuery('#uploadprescription_prescription').val("");
+            jQuery('#uploadprescription_uploadname').val("");
+            uploadprescription.save();
+        }
+    }
+}
+
+//]]>
+</script>

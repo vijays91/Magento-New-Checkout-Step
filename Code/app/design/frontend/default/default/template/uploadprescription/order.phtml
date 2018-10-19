@@ -1,0 +1,29 @@
+<?php
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+?>
+
+<div class="col2-set order-info-box">
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h2><?php echo $this->__('Upload Prescription') ?></h2>
+            </div>
+            <div class="box-content">               
+                <?php
+                    $uploadprescription = $this->getOrder()->getUploadprescription();
+                    if(!empty(trim($uploadprescription))) {
+                        $getUploadprescriptionname = $this->getOrder()->getUploadprescriptionname();
+                        $image_path=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."uploadprescription".$uploadprescription;
+                        echo $link = "<a href='". $image_path ."' target='_blank' >". $getUploadprescriptionname ."</a>";
+                    } else {
+                        echo "-";
+                    }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!---
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+-->
+<config>
+	<modules>
+		<LWM_UploadPrescription>
+			<version>1.0.1</version>
+		</LWM_UploadPrescription>
+	</modules>
+
+	<global>
+		<blocks>
+			<checkout>
+				<rewrite>
+					<onepage>LWM_UploadPrescription_Block_Onepage</onepage>
+				</rewrite>
+			</checkout>
+			<uploadprescription>
+				<class>LWM_UploadPrescription_Block</class>
+			</uploadprescription>
+		</blocks>
+
+		<models>
+			<uploadprescription>
+				<class>LWM_UploadPrescription_Model</class>
+			</uploadprescription>
+			<checkout>
+				<rewrite>
+					<type_onepage>LWM_UploadPrescription_Model_Type_Onepage</type_onepage>
+				</rewrite>
+			</checkout>
+		</models>
+
+		<helpers>
+			<uploadprescription>
+				<class>LWM_UploadPrescription_Helper</class>
+			</uploadprescription>
+		</helpers>
+
+		<rewrite>
+			<uploadprescription_onepage>
+				<from><![CDATA[#^/checkout/onepage/#]]></from>
+				<to>/uploadprescription/onepage/</to>
+			</uploadprescription_onepage>
+		</rewrite>                
+        
+        <resources>
+			<uploadprescription_setup>
+				<setup>
+					<module>LWM_UploadPrescription</module>
+					<class>Mage_Sales_Model_Resource_Setup</class>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</uploadprescription_setup>
+        </resources>
+	</global>
+
+	<frontend>
+		<routers>
+			<uploadprescription>
+				<use>standard</use>
+				<args>
+					<module>LWM_UploadPrescription</module>
+					<frontName>uploadprescription</frontName>
+				</args>
+			</uploadprescription>			
+		</routers>      
+		<layout>
+			<updates>
+				<uploadprescription>
+					<file>uploadprescription.xml</file>
+				</uploadprescription>
+			</updates>
+		</layout>
+		<events>
+			<sales_convert_quote_to_order>
+				<observers>
+					<uploadprescription>
+						<type>singleton</type>
+						<class>uploadprescription/observer</class>
+						<method>sales_convert_quote_to_order</method>
+					</uploadprescription>
+				</observers>
+			</sales_convert_quote_to_order>
+		</events>
+   </frontend> 
+
+	<adminhtml>
+		<layout>
+			<updates>
+				<uploadprescription>
+					<file>uploadprescription.xml</file>
+				</uploadprescription>
+			</updates>
+		</layout>
+	</adminhtml>
+</config>

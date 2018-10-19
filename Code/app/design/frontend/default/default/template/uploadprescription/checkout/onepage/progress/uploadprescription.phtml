@@ -1,0 +1,36 @@
+<?php
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+?>
+
+<?php if($this->getCheckout()->getStepData('uploadprescription', 'complete')): ?>
+    <dt class="complete">
+        <?php echo $this->__('Upload Prescription') ?><span class="changelink"> <span class="separator">|</span> <a href="#uploadprescription"
+        onclick="checkout.changeSection('opc-uploadprescription'); return false;"><?php echo $this->__('Change') ?></a></span>
+    </dt>
+    
+    <dd class="complete">
+        <div>
+            <?php echo $this->__('Upload Prescription :');?>
+            <b>
+                <?php
+                    $uploadprescription = $this->getQuote()->getUploadprescription();
+                    $getUploadprescriptionname = $this->getQuote()->getUploadprescriptionname();
+                    if($uploadprescription) {
+                        $image_path=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."uploadprescription".$uploadprescription;
+                        echo $link = "<a href='". $image_path ."' target='_blank' >". $getUploadprescriptionname ."</a>";
+                    } else {
+                        echo "-";
+                    }
+                ?>
+            </b>
+        </div>
+    </dd>
+<?php else: ?>
+    <dt>
+        <?php echo $this->__('Upload Prescription') ?>
+    </dt>
+<?php endif; ?>

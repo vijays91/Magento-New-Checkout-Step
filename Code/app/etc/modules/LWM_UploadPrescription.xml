@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+-->
+<config>
+    <modules>
+        <LWM_UploadPrescription>
+			<active>true</active>
+			<codePool>local</codePool>
+        </LWM_UploadPrescription>
+    </modules>
+</config>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!---
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+-->
+<layout version="0.1.0">
+
+    <sales_order_view>
+        <reference name="my.account.wrapper">
+            <block type="uploadprescription/uploadprescription_order" name="uploadprescription.order" template="uploadprescription/order.phtml" after='sales.order.info' />
+        </reference>
+    </sales_order_view>
+
+    <checkout_onepage_index>
+        <reference name='checkout.onepage'>
+            <!-- action method='setTemplate'><template>uploadprescription/checkout/onepage.phtml</template></action -->
+            <block type="uploadprescription/onepage_uploadprescription" name="checkout.onepage.uploadprescription" as="uploadprescription" template="uploadprescription/checkout/onepage/uploadprescription.phtml"/>
+        </reference>
+        <reference name='right'>
+            <reference name='checkout.progress'>
+                <action method='setTemplate'><template>uploadprescription/checkout/onepage/progress.phtml</template></action>
+                <block type="checkout/onepage_progress" name="uploadprescription.progress" template="uploadprescription/checkout/onepage/progress/uploadprescription.phtml"></block>
+            </reference>
+        </reference>
+    </checkout_onepage_index>
+    
+    <checkout_onepage_progress>
+        <reference name='root'>
+            <action method='setTemplate'><template>uploadprescription/checkout/onepage/progress.phtml</template></action>
+            <block type="checkout/onepage_progress" name="uploadprescription.progress" template="uploadprescription/checkout/onepage/progress/uploadprescription.phtml"></block>
+        </reference>
+    </checkout_onepage_progress>
+
+    <checkout_onepage_uploadprescription>
+        <remove name="right"/>
+        <remove name="left"/>
+        <block type="checkout/onepage_uploadprescription" name="root" output="toHtml" template="uploadprescription/checkout/onepage/uploadprescription.phtml"></block>
+    </checkout_onepage_uploadprescription>
+
+    <checkout_onepage_progress_uploadprescription>
+        <remove name="right"/>
+        <remove name="left"/>
+        <block type="checkout/onepage_progress" name="root" output="toHtml" template="uploadprescription/checkout/onepage/progress/uploadprescription.phtml"></block>
+    </checkout_onepage_progress_uploadprescription>
+</layout>

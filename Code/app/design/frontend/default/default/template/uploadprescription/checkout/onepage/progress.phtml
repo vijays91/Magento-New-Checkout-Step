@@ -1,0 +1,51 @@
+<?php
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+?>
+
+<div class="block block-progress opc-block-progress">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Your Checkout Progress') ?></span></strong>
+    </div>
+    <div class="block-content">
+        <dl>
+            <?php if ($this->getCheckout()->getStepData('billing', 'is_show')): ?>
+            <div id="billing-progress-opcheckout">
+                <?php echo $this->getChildHtml('billing.progress') ?>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($this->getCheckout()->getStepData('shipping', 'is_show')): ?>
+            <div id="shipping-progress-opcheckout">
+                <?php echo $this->getChildHtml('shipping.progress') ?>
+            </div>
+            <?php endif; ?>
+
+            <?php if ($this->getCheckout()->getStepData('shipping_method', 'is_show')): ?>
+            <div id="shipping_method-progress-opcheckout">
+                <?php echo $this->getChildHtml('shippingmethod.progress') ?>
+            </div>
+            <?php endif; ?>
+
+
+            <?php /*- -*/ ?>
+            <?php if ($this->getCheckout()->getStepData('uploadprescription', 'is_show')): ?>
+                <div id="uploadprescription-progress-opcheckout">
+                   <?php echo $this->getChildHtml('uploadprescription.progress') ?>
+                </div>
+            <?php endif; ?>
+            <?php /*- -*/ ?>
+
+
+            <?php if ($this->getCheckout()->getStepData('payment', 'is_show')): ?>
+            <div id="payment-progress-opcheckout">
+                <?php echo $this->getChildHtml('payment.progress') ?>
+            </div>
+            <?php endif; ?>
+        </dl>
+    </div>
+</div>
+

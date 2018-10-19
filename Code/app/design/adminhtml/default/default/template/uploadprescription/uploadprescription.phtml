@@ -1,0 +1,72 @@
+<?php
+/**
+ * @author LWM
+ * @copyright Copyright (c) 2018
+ * @package LWM_UploadPrescription
+ */
+
+?>
+<?php /** @var $this LWM_UploadPrescription_Block_Adminhtml_Sales_Order_Uploadprescription */ ?>
+<?php $_order = $this->getOrder() ?>
+<div class="entry-edit-head" id='uploadprescription'>
+    <h4 class="icon-head head-uploadprescription"><?php echo $this->__("Prescription Attachment ");?></h4>
+</div>
+<fieldset>
+        <div>
+            <?php // echo $this->__('Upload Prescription :');?>
+            <b>
+                <?php
+                    $uploadprescription = $_order->getUploadprescription();
+                    $getUploadprescriptionname = $_order->getUploadprescriptionname();
+                    $image_path=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."uploadprescription".$uploadprescription;
+                    echo $link = "<a href='". $image_path ."' target='_blank' >". $getUploadprescriptionname ."</a>";
+                ?>
+            </b>
+        </div>
+        <div>&nbsp;</div>
+        <div class="input-box">
+            <form id="co-uploadprescription-form" action="" method="post" enctype="multipart/form-data">
+                <span class="field-row">
+                    <input type='file' name='uploadprescription[image]'  class="required-entry input-text" id="uploadprescription_image" value='<?php // echo $this->getQuote()->getUploadprescription()?>'/>
+                </span>
+                <span class="field-row">
+                    <button type="button" title="<?php echo $this->__('Continue') ?>" class="button" onclick="validate()"><span><span><?php echo $this->__('Continue') ?></span></span></button>
+                </span>
+            </form>
+        </div>
+</fieldset>
+
+
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>lib/jquery/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS); ?>lib/jquery/noconflict.js"></script>
+
+<script type="text/javascript">
+function validate() {
+    var myForm = new varienForm('co-uploadprescription-form', true);
+    if (myForm.validator.validate()) {
+        var file_data = jQuery('#uploadprescription_image').prop('files')[0];   
+        var form_data = new FormData();
+        jQuery("#loading-mask").show();
+        form_data.append('file', file_data);
+        jQuery.ajax({
+            url: "<?php echo Mage::getUrl('checkout/onepage/uploadprescription'); ?>orderid/<?php echo $_order->getId(); ?>/",
+            dataType: 'text',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,                         
+            type: 'post',
+            success: function(response){
+                jQuery("#loading-mask").hide();
+                var obj = JSON.parse(response);
+                if(obj.filename && obj.uploadname) {
+                    window.location.reload();        
+                } else {
+                    alert('<?php echo $this->__("Kindly check the uploaded file format."); ?>');
+                }
+            }
+        });
+
+    }
+}
+</script>
